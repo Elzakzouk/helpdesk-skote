@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\RegionController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,11 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 Route::resource('cities', CityController::class);
 Route::delete('/cities/{city}/force-delete', [CityController::class,'forceDelete'])->name('cities.force-delete');
 Route::post('/cities/{city}/restore', [CityController::class,'restore'])->name('cities.restore');
+
+// Region 
+Route::resource('regions', RegionController::class);
+Route::delete('/regions/{region}/force-delete', [RegionController::class,'forceDelete'])->name('regions.force-delete');
+Route::post('/regions/{region}/restore', [RegionController::class,'restore'])->name('regions.restore');
 
 
 Route::get('{any}', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
