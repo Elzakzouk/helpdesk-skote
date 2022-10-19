@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Region;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class RegionController extends Controller
 {
@@ -23,9 +24,9 @@ class RegionController extends Controller
      */
     public function index()
     {
-        $regions = Region::all();
-
-        return view('city.index', compact('regions'));
+        $regions = Region::withTrashed()->get();
+        
+        return view('region.index', compact('regions'));
     }
 
     /**
@@ -35,7 +36,7 @@ class RegionController extends Controller
      */
     public function create()
     {
-        //
+        return view('region.create');
     }
 
     /**
@@ -46,7 +47,16 @@ class RegionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        $data = $request->validate([
+            'name' => 'required|unique:regions,name|max:191',
+            'name_ar' => 'required|unique:regions,name_ar|max:191'
+        ]);
+
+        Region::create($data);
+
+        return redirect()->route('regions.index')->with('success','Created successfully');
+
     }
 
     /**
@@ -55,9 +65,9 @@ class RegionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Region $region)
     {
-        //
+        return view('region.show',compact('region'));
     }
 
     /**
@@ -66,9 +76,9 @@ class RegionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Region $region)
     {
-        //
+        return view('region.edit',compact('region'));
     }
 
     /**
@@ -78,9 +88,16 @@ class RegionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Region $region)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|max:191|unique:regions,name,'.$region->id,
+            'name_ar' => 'required|max:191|unique:regions,name_ar,'.$region->id
+        ]);
+        
+        $region->update($data);
+
+        return redirect()->route('regions.index')->with('success','Updated successfully');
     }
 
     /**
@@ -89,8 +106,40 @@ class RegionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Region $region)
     {
-        //
+        $region->delete();
+
+        return redirect()->back()->with('success','Deleted successfully');
+    }
+
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $region = Region::onlyTrashed()->findOrFail($id);
+        $region->restore();
+
+        return redirect()->back()->with('success','Deleted successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete($id)
+    {
+        $region = Region::onlyTrashed()->findOrFail($id);
+        $region->forceDelete();
+
+        return redirect()->back()->with('success','Deleted successfully');
     }
 }
