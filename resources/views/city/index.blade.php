@@ -5,6 +5,7 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -82,6 +83,8 @@
                                 <th>create_at</th>
                                 <th>Update</th>
                                 <th>Delete</th>
+                                <th>view</th>
+                                
                             </tr>
                         </thead>
 
@@ -101,10 +104,10 @@
                                 <td><form action="{{route('cities.destroy',[$city -> id])}}" method="POST">
                                @csrf
                                @method('DELETE')
-                               <button class="btn btn-link" style = "color: red" type="submit"> <i class="mdi mdi-trash-can-outline "></i>Delete</button>
+                               <button class="Confirm-button btn btn-link" style = "color: red" type="submit"> <i class="mdi mdi-trash-can-outline "></i>Delete</button>
                             </form></td>
-                                
-                            
+                            <td><a class="btn btn-link" href="{{route('cities.show',[$city->id])}}">view</a></td>
+                           
 
                             </tr>
                             @endforeach
@@ -114,7 +117,6 @@
             </div>
         </div> <!-- end col -->
     </div> <!-- end row -->
-
 
 
 
@@ -139,6 +141,12 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+
+    <!-- Sweet Alerts js -->
+<script src="{{ URL::asset('/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+
+<!-- Sweet alert init js-->
+<script src="{{ URL::asset('/assets/js/pages/sweet-alerts.init.js') }}"></script>
 
 
 @endsection

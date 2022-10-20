@@ -1,11 +1,10 @@
 
-
 <?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.Cities'); ?> <?php $__env->stopSection(); ?>
+
 
 <?php $__env->startSection('css'); ?>
     <!-- DataTables -->
     <link href="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.css')); ?>" rel="stylesheet" type="text/css" />
-    <link href="<?php echo e(URL::asset('/assets/libs/sweetalert2/sweetalert2.min.css')); ?>" rel="stylesheet" type="text/css" />
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -16,27 +15,7 @@
 <?php echo $__env->renderComponent(); ?>
 
 
-
-<?php if( Session::has('success')): ?>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        updated successfully
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-<?php endif; ?>
-
-
-    <?php if( Session::has('delete')): ?>
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        deleted successfully
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-    <?php endif; ?>
-
-    <div style="padding-left:93%;padding-bottom:30px;">
-                <a class="btn btn-success" href="<?php echo e(route('cities.create')); ?>">New City</a>
-                </div>
-
-                <div class="row">
+<div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -81,9 +60,9 @@
                                 <th>Main</th>
                                 <th>update_at</th>
                                 <th>create_at</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                                <th>view</th>
+                                <th>Deleted_at</th>
+                                <th>force delete</th>
+                                <th>restore</th>
                                 
                             </tr>
                         </thead>
@@ -100,14 +79,24 @@
                                     <?php endif; ?> </td>
                                 <td><?php echo e($city->updated_at); ?></td>
                                 <td><?php echo e($city->created_at); ?></td>
-                                <td><a class="btn btn-link" href="<?php echo e(route('cities.edit',[$city->id])); ?>"><i class="mdi mdi-pencil"></i>Edit</a></td>
-                                <td><form action="<?php echo e(route('cities.destroy',[$city -> id])); ?>" method="POST">
-                               <?php echo csrf_field(); ?>
-                               <?php echo method_field('DELETE'); ?>
-                               <button class="Confirm-button btn btn-link" style = "color: red" type="submit"> <i class="mdi mdi-trash-can-outline "></i>Delete</button>
-                            </form></td>
-                            <td><a class="btn btn-link" href="<?php echo e(route('cities.show',[$city->id])); ?>">view</a></td>
-                           
+                                <td><?php echo e($city->deleted_at); ?></td>
+                                <td><form action="<?php echo e(route('cities.force-delete',[$city -> id])); ?>" method="POST">
+                                  <?php echo csrf_field(); ?>
+                                  <?php echo method_field('DELETE'); ?>
+                                <button class="btn btn-link" style = "color:red"  type="submit"><i class="mdi mdi-delete "></i></button>
+                                </form></td>
+                                <td><form action="<?php echo e(route('cities.restore',[$city -> id])); ?>" method="POST">
+                                  <?php echo csrf_field(); ?>
+                                <button class="btn btn-link" style = "color:black" type="submit"><i class="mdi mdi-restore "></i></button>
+                                </form></td>
+                              
+                                
+                                
+                            
+                
+                            
+                                
+                            
 
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -119,20 +108,7 @@
     </div> <!-- end row -->
 
 
-
-
-
-
-
-
-
-
-
 <?php $__env->stopSection(); ?>
-
-
-
-
 
 <?php $__env->startSection('script'); ?>
     <!-- Required datatable js -->
@@ -142,12 +118,8 @@
     <!-- Datatable init js -->
     <script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
 
-    <!-- Sweet Alerts js -->
-<script src="<?php echo e(URL::asset('/assets/libs/sweetalert2/sweetalert2.min.js')); ?>"></script>
-
-<!-- Sweet alert init js-->
-<script src="<?php echo e(URL::asset('/assets/js/pages/sweet-alerts.init.js')); ?>"></script>
-
 
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\helpdesk-skote\resources\views/city/index.blade.php ENDPATH**/ ?>
+
+
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\helpdesk-skote\resources\views/City/archive.blade.php ENDPATH**/ ?>

@@ -69,7 +69,7 @@ class CityController extends Controller
           $city->name_ar = $request->input('name_ar');
       
           $city->Save();
-          return redirect()->back()->with('create_success','Created successfully');
+          return redirect()->back()->with('success','Created successfully');
          
     }
 
@@ -81,7 +81,7 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
+      return view('city.show',compact('city')); 
     }
 
     public function trashed()
@@ -98,18 +98,10 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(City $city)
     { 
 
-      $city=new City;
-      $city=City::findOrFail($id);
-
       return view('city.edit',compact('city'));
-      
-
-
-       
-     
     }
 
     /**
@@ -119,22 +111,16 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
-    {   
-      $request->validate([
-        'name' => 'required|max:191|unique:cities,name',
-        'name_ar' => 'required|max:191|unique:cities,name_ar',
+    public function update(Request $request,City $city)
+    {  
+      $data = $request->validate([
+        'name' => 'required|max:191|unique:cities,name,'.$city->id,
+        'name_ar' => 'required|max:191|unique:cities,name_ar,'.$city->id,
         'main' => 'nullable|boolean'
-    ]);
-   
-      $city=City::find($id);
-      $city->name = $request->input('name');
-      $city->name_ar = $request->input('name_ar');
-      $city->main = $request->input('main');
-    
-      $city->update();
+    ]); 
+ 
   
-        //  $city->update($data);
+       $city->update($data);
       
       return redirect()->route('cities.index')->with('success','Updated successfully');
     }
@@ -145,9 +131,9 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(City $city)
     {
-    $city = City::find($id);
+    
     $city->delete();
      
     return redirect()->back()->with('delete','Deleted successfully');;
