@@ -1,38 +1,38 @@
-@extends('layouts.master')
 
-@section('title') @lang('translation.Cities') @endsection
 
-@section('css')
+<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.Cities'); ?> <?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('css'); ?>
     <!-- DataTables -->
-    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
-@endsection
+    <link href="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@component('components.breadcrumb')
-    @slot('li_1') Settings @endslot
-    @slot('title') Cities @endslot
-@endcomponent
+<?php $__env->startComponent('components.breadcrumb'); ?>
+    <?php $__env->slot('li_1'); ?> Settings <?php $__env->endSlot(); ?>
+    <?php $__env->slot('title'); ?> Cities <?php $__env->endSlot(); ?>
+<?php echo $__env->renderComponent(); ?>
 
 
 
-@if ( Session::has('success'))
+<?php if( Session::has('success')): ?>
 <div class="alert alert-success alert-dismissible fade show" role="alert">
                         updated successfully
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-@endif
+<?php endif; ?>
 
 
-    @if ( Session::has('delete'))
+    <?php if( Session::has('delete')): ?>
 <div class="alert alert-success alert-dismissible fade show" role="alert">
                         deleted successfully
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-    @endif
+    <?php endif; ?>
 
     <div style="padding-left:93%;padding-bottom:30px;">
-                <a class="btn btn-success" href="{{route('cities.create')}}">New City</a>
+                <a class="btn btn-success" href="<?php echo e(route('cities.create')); ?>">New City</a>
                 </div>
 
                 <div class="row">
@@ -49,10 +49,10 @@
 
                             <div class="dropdown-menu">
                  
-                                <a class="dropdown-item" href="{{url('archive')}}">Deleted Record</a>
+                                <a class="dropdown-item" href="<?php echo e(url('archive')); ?>">Deleted Record</a>
                             
                            
-                               <a class="dropdown-item" href="{{route('cities.index')}}">Recored</a>
+                               <a class="dropdown-item" href="<?php echo e(route('cities.index')); ?>">Recored</a>
                             </div>
                     
                         </div>
@@ -86,28 +86,28 @@
                         </thead>
 
                         <tbody>
-                            @foreach($cities as $city)
+                            <?php $__currentLoopData = $cities; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $city): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
-                                <td>{{$city->name}} </td>
-                                <td>{{$city->name_ar}}</td>
-                                <td>@if ($city->main === 1)
+                                <td><?php echo e($city->name); ?> </td>
+                                <td><?php echo e($city->name_ar); ?></td>
+                                <td><?php if($city->main === 1): ?>
                                 <i class="mdi mdi-check-circle"></i>
-                                    @else
+                                    <?php else: ?>
                                 <i class="mdi mdi-check-circle-outline"></i>
-                                    @endif </td>
-                                <td>{{$city->updated_at}}</td>
-                                <td>{{$city->created_at}}</td>
-                                <td><a class="btn btn-link" href="{{route('cities.edit',[$city->id])}}"><i class="mdi mdi-pencil"></i>Edit</a></td>
-                                <td><form action="{{route('cities.destroy',[$city -> id])}}" method="POST">
-                               @csrf
-                               @method('DELETE')
+                                    <?php endif; ?> </td>
+                                <td><?php echo e($city->updated_at); ?></td>
+                                <td><?php echo e($city->created_at); ?></td>
+                                <td><a class="btn btn-link" href="<?php echo e(route('cities.edit',[$city->id])); ?>"><i class="mdi mdi-pencil"></i>Edit</a></td>
+                                <td><form action="<?php echo e(route('cities.destroy',[$city -> id])); ?>" method="POST">
+                               <?php echo csrf_field(); ?>
+                               <?php echo method_field('DELETE'); ?>
                                <button class="btn btn-link" style = "color: red" type="submit"> <i class="mdi mdi-trash-can-outline "></i>Delete</button>
                             </form></td>
                                 
                             
 
                             </tr>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
                     </table>
                 </div>
@@ -126,19 +126,20 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
 
 
 
 
-@section('script')
+<?php $__env->startSection('script'); ?>
     <!-- Required datatable js -->
-    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
-    <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
-    <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('/assets/libs/jszip/jszip.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('/assets/libs/pdfmake/pdfmake.min.js')); ?>"></script>
     <!-- Datatable init js -->
-    <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
 
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\helpdesk-skote\resources\views/city/index.blade.php ENDPATH**/ ?>

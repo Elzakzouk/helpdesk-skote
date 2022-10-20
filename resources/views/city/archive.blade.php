@@ -1,6 +1,6 @@
 @extends('layouts.master')
-
 @section('title') @lang('translation.Cities') @endsection
+
 
 @section('css')
     <!-- DataTables -->
@@ -15,27 +15,7 @@
 @endcomponent
 
 
-
-@if ( Session::has('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        updated successfully
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-@endif
-
-
-    @if ( Session::has('delete'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        deleted successfully
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-    @endif
-
-    <div style="padding-left:93%;padding-bottom:30px;">
-                <a class="btn btn-success" href="{{route('cities.create')}}">New City</a>
-                </div>
-
-                <div class="row">
+<div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -80,8 +60,10 @@
                                 <th>Main</th>
                                 <th>update_at</th>
                                 <th>create_at</th>
-                                <th>Update</th>
-                                <th>Delete</th>
+                                <th>Deleted_at</th>
+                                <th>force delete</th>
+                                <th>restore</th>
+                                
                             </tr>
                         </thead>
 
@@ -97,12 +79,22 @@
                                     @endif </td>
                                 <td>{{$city->updated_at}}</td>
                                 <td>{{$city->created_at}}</td>
-                                <td><a class="btn btn-link" href="{{route('cities.edit',[$city->id])}}"><i class="mdi mdi-pencil"></i>Edit</a></td>
-                                <td><form action="{{route('cities.destroy',[$city -> id])}}" method="POST">
-                               @csrf
-                               @method('DELETE')
-                               <button class="btn btn-link" style = "color: red" type="submit"> <i class="mdi mdi-trash-can-outline "></i>Delete</button>
-                            </form></td>
+                                <td>{{$city->deleted_at}}</td>
+                                <td><form action="{{route('cities.force-delete',[$city -> id])}}" method="POST">
+                                  @csrf
+                                  @method('DELETE')
+                                <button class="btn btn-link" style = "color:red"  type="submit"><i class="mdi mdi-delete "></i></button>
+                                </form></td>
+                                <td><form action="{{route('cities.restore',[$city -> id])}}" method="POST">
+                                  @csrf
+                                <button class="btn btn-link" style = "color:black" type="submit"><i class="mdi mdi-restore "></i></button>
+                                </form></td>
+                              
+                                
+                                
+                            
+                
+                            
                                 
                             
 
@@ -116,21 +108,7 @@
     </div> <!-- end row -->
 
 
-
-
-
-
-
-
-
-
-
-
 @endsection
-
-
-
-
 
 @section('script')
     <!-- Required datatable js -->
@@ -142,3 +120,4 @@
 
 
 @endsection
+

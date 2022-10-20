@@ -56,4 +56,4 @@
 
 <!-- Right bar overlay-->
 <div class="rightbar-overlay"></div>
--->
+--><?php /**PATH C:\xampp\htdocs\helpdesk-skote\resources\views/layouts/right-sidebar.blade.php ENDPATH**/ ?>

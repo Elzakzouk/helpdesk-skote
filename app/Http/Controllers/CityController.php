@@ -25,7 +25,9 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
+        $cities = City::all();
+        
+        return view('city.index', compact('cities'));
     }
 
     /**
@@ -35,7 +37,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        return view('city.create');
     }
 
     /**
@@ -46,7 +48,29 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|max:191|unique:cities,name',
+            'name_ar' => 'required|max:191|unique:cities,name',
+            'main' => 'nullable|boolean'
+        ]);
+
+          $city=new City();
+          if($request->input('main')==0)
+          {
+            $city->main=0;
+          }
+          else
+          {
+            $city->main=1;
+          }
+          //dd($city->main);  
+        
+         $city->name = $request->input('name');
+          $city->name_ar = $request->input('name_ar');
+      
+          $city->Save();
+          return redirect()->back()->with('create_success','Created successfully');
+         
     }
 
     /**
@@ -60,15 +84,32 @@ class CityController extends Controller
         //
     }
 
+    public function trashed()
+    {
+  
+      $cities=City::onlyTrashed()->get();
+      return view('City.archive',compact('cities'));
+      
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
-    {
-        //
+    public function edit($id)
+    { 
+
+      $city=new City;
+      $city=City::findOrFail($id);
+
+      return view('city.edit',compact('city'));
+      
+
+
+       
+     
     }
 
     /**
@@ -78,9 +119,24 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, City $city)
-    {
-        //
+    public function update(Request $request,$id)
+    {   
+      $request->validate([
+        'name' => 'required|max:191|unique:cities,name',
+        'name_ar' => 'required|max:191|unique:cities,name_ar',
+        'main' => 'nullable|boolean'
+    ]);
+   
+      $city=City::find($id);
+      $city->name = $request->input('name');
+      $city->name_ar = $request->input('name_ar');
+      $city->main = $request->input('main');
+    
+      $city->update();
+  
+        //  $city->update($data);
+      
+      return redirect()->route('cities.index')->with('success','Updated successfully');
     }
 
     /**
@@ -89,9 +145,12 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy($id)
     {
-        //
+    $city = City::find($id);
+    $city->delete();
+     
+    return redirect()->back()->with('delete','Deleted successfully');;
     }
 
     /**
@@ -100,9 +159,11 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function foreDelete(City $city)
+    public function forceDelete($id)
     {
-        //
+        $city=City::onlyTrashed()->findOrFail($id);
+        $city->forcedelete();
+        return back();
     }
 
     /**
@@ -111,8 +172,10 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function restore(City $city)
+    public function restore($id)
     {
-        //
+        $city=City::onlyTrashed()->findOrFail($id);
+        $city->restore();
+        return back();
     }
 }

@@ -25,6 +25,7 @@ Route::post('/update-profile/{id}', [App\Http\Controllers\HomeController::class,
 Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class, 'updatePassword'])->name('updatePassword');
 
 
+
 // Route::group(['prefix' => 'users'], function() {
 //     Route::get('/', 'UsersController@index')->name('users.index');
 //     Route::get('/create', 'UsersController@create')->name('users.create');
@@ -37,6 +38,18 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 //     Route::delete('/{user}/force-delete', 'UsersController@forceDelete')->name('users.force-delete');
 //     Route::post('/restore-all', 'UsersController@restoreAll')->name('users.restore-all');
 // });
+
+
+
+
+
+
+
+
+
+
+
+route::get('/archive', [CityController::class,'trashed']);
 
 Route::resource('cities', CityController::class);
 Route::delete('/cities/{city}/force-delete', [CityController::class,'forceDelete'])->name('cities.force-delete');
