@@ -5,6 +5,7 @@
 <?php $__env->startSection('css'); ?>
     <!-- DataTables -->
     <link href="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('/assets/libs/sweetalert2/sweetalert2.min.css')); ?>" rel="stylesheet" type="text/css" />
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
@@ -32,7 +33,7 @@
                                 <a class="dropdown-item" href="<?php echo e(url('archive')); ?>">Deleted Record</a>
                             
                            
-                               <a class="dropdown-item" href="<?php echo e(route('cities.index')); ?>">Recored</a>
+                               <a class="dropdown-item" href="<?php echo e(route('cities.index')); ?>">Record</a>
                             </div>
                     
                         </div>
@@ -61,8 +62,8 @@
                                 <th>update_at</th>
                                 <th>create_at</th>
                                 <th>Deleted_at</th>
-                                <th>force delete</th>
-                                <th>restore</th>
+                                <th></th>
+                              
                                 
                             </tr>
                         </thead>
@@ -80,15 +81,16 @@
                                 <td><?php echo e($city->updated_at); ?></td>
                                 <td><?php echo e($city->created_at); ?></td>
                                 <td><?php echo e($city->deleted_at); ?></td>
-                                <td><form action="<?php echo e(route('cities.force-delete',[$city -> id])); ?>" method="POST">
-                                  <?php echo csrf_field(); ?>
-                                  <?php echo method_field('DELETE'); ?>
-                                <button class="btn btn-link" style = "color:red"  type="submit"><i class="mdi mdi-delete "></i></button>
-                                </form></td>
-                                <td><form action="<?php echo e(route('cities.restore',[$city -> id])); ?>" method="POST">
-                                  <?php echo csrf_field(); ?>
-                                <button class="btn btn-link" style = "color:black" type="submit"><i class="mdi mdi-restore "></i></button>
-                                </form></td>
+                                <td class="d-flex gap-3">  <form method="POST" action="<?php echo e(route('cities.force-delete', $city->id)); ?>">
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('DELETE'); ?>
+                                                <button type="submit" class="border-0 bg-transparent text-danger p-0 d-flex align-items-center gap-1 force_delete_confirm"><i class="bx bx-trash label-icon"></i><span>Force Delete</span></button>
+                                                
+                                            </form>
+                                   <form method="POST" action="<?php echo e(route('cities.restore', $city->id)); ?>" class="d-flex align-items-center">
+                                                <?php echo csrf_field(); ?>
+                                                <button type="submit" class="border-0 bg-transparent text-warning p-0 d-flex align-items-center gap-1 restore_confirm"><i class="bx bx-undo label-icon"></i><span>Restore</span></button>
+                                            </form></td>
                               
                                 
                                 
@@ -117,7 +119,53 @@
     <script src="<?php echo e(URL::asset('/assets/libs/pdfmake/pdfmake.min.js')); ?>"></script>
     <!-- Datatable init js -->
     <script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
+        <!-- Sweet Alerts js -->
+        <script src="<?php echo e(URL::asset('/assets/libs/sweetalert2/sweetalert2.min.js')); ?>"></script>
 
+<!-- Sweet alert init js-->
+<script src="<?php echo e(URL::asset('/assets/js/pages/sweet-alerts.init.js')); ?>"></script>
+
+<script>
+
+$('.restore_confirm').click(function (e) {
+            var form =  $(this).closest("form");
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "the record will be restored!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Restore"
+            }).then(function (result) {
+                if (result.value) {
+                    form.submit();
+                    Swal.fire("Restored!", "Your file has been restored.", "success");
+                }
+            });    
+        });
+
+
+        $('.forceDelete_confirm').click(function (e) {
+            var form =  $(this).closest("form");
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Delete Permanently"
+            }).then(function (result) {
+                if (result.value) {
+                    form.submit();
+                    Swal.fire("Delete Permanently!", "Your file deleted permanently.", "success");
+                }
+            });    
+        });   
+</script>
 
 <?php $__env->stopSection(); ?>
 

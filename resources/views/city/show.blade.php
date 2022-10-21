@@ -14,9 +14,6 @@
     @slot('li_1') Settings @endslot
     @slot('title') Cities @endslot
 @endcomponent
-
-
-
 <div class="col-xl-15">
         <div class="card" >
             <div class="card-body">

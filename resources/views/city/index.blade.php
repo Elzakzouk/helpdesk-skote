@@ -1,137 +1,110 @@
 @extends('layouts.master')
 
-@section('title') @lang('translation.Cities') @endsection
+@section('title') @lang('translation.regions') @endsection
 
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <!-- Sweet Alert-->
     <link href="{{ URL::asset('/assets/libs/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
 
-@component('components.breadcrumb')
-    @slot('li_1') Settings @endslot
-    @slot('title') Cities @endslot
-@endcomponent
+    @component('components.breadcrumb')
+        @slot('li_1') Settings @endslot
+        @slot('title') Cities @endslot
+    @endcomponent
 
-
-
-@if ( Session::has('success'))
+    @if ( Session::has('success'))
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        updated successfully
+                        Update successfully
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 @endif
-
-
-    @if ( Session::has('delete'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-                        deleted successfully
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-    @endif
-
-    <div style="padding-left:93%;padding-bottom:30px;">
-                <a class="btn btn-success" href="{{route('cities.create')}}">New City</a>
-                </div>
-
-                <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-
-                <!-- start drop menu  -->
-                <div class="col-sm-6" style=" padding-left:95%;padding-bottom:5px;">
-                        <div class="dropdown mt-4 mt-sm-0">
-                            <a href="#" class="btn btn-link dropdown-toggle" style="font-size: 24px;" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-filter-outline"></i>
-                            </a>
-
-                            <div class="dropdown-menu">
-                 
-                                <a class="dropdown-item" href="{{url('archive')}}">Deleted Record</a>
-                            
-                           
-                               <a class="dropdown-item" href="{{route('cities.index')}}">Recored</a>
-                            </div>
-                    
-                        </div>
-                    
-                    </div>
-                
-
-    <!-- start of table -->
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title"></h4>
-                    <p class="card-title-desc">
-                    </p>
+                    <div class="d-flex justify-content-between my-2 align-items-center">
+                        <h4 class="card-title">Cites table</h4>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{route('cities.create')}}"  class="btn btn-primary waves-effect waves-light">Create</a>
+                        </div>
+                    </div>
+                    
+                    {{-- <p class="card-title-desc">
+                        The Buttons extension for DataTables
+                        provides a common set of options, API methods and styling to display
+                        buttons on a page that will interact with a DataTable. The core library
+                        provides the based framework upon which plug-ins can built.
+                    </p> --}}
 
                     <table id="datatable-buttons" class="table table-bordered dt-responsive nowrap w-100">
-                    
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Name_ar</th>
-                                <th>Main</th>
-                                <th>update_at</th>
-                                <th>create_at</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                                <th>view</th>
-                                
+                                <th>NAME</th>
+                                <th>NAME Arabic</th>
+                                <th>MAIN</th>
+                                <th>CREATED AT</th>
+                                <th>UPDATED AT</th>
+                                <th>ACTIONS</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach($cities as $city)
-                            <tr>
-                                <td>{{$city->name}} </td>
-                                <td>{{$city->name_ar}}</td>
-                                <td>@if ($city->main === 1)
-                                <i class="mdi mdi-check-circle"></i>
-                                    @else
-                                <i class="mdi mdi-check-circle-outline"></i>
+                            @foreach ($cities as $city)
+                                <tr>
+                                    <td class="get_name" >{{$city->name}}</td>
+                                    <td>{{$city->name_ar}}</td>
+                                    <td>@if ($city->main === 1)
+                                       <i class="mdi mdi-check-circle"></i>
+                                        @else
+                                       <i class="mdi mdi-check-circle-outline"></i>
                                     @endif </td>
-                                <td>{{$city->updated_at}}</td>
-                                <td>{{$city->created_at}}</td>
-                                <td><a class="btn btn-link" href="{{route('cities.edit',[$city->id])}}"><i class="mdi mdi-pencil"></i>Edit</a></td>
-                                <td><form action="{{route('cities.destroy',[$city -> id])}}" method="POST">
-                               @csrf
-                               @method('DELETE')
-                               <button class="Confirm-button btn btn-link" style = "color: red" type="submit"> <i class="mdi mdi-trash-can-outline "></i>Delete</button>
-                            </form></td>
-                            <td><a class="btn btn-link" href="{{route('cities.show',[$city->id])}}">view</a></td>
-                           
+                                    <td>{{$city->created_at}}</td>
+                                    <td>{{$city->updated_at}}</td>
+                                    <td>       
+                                        <div class="d-flex flex-wrap gap-2">
 
-                            </tr>
+                                            <a href="{{ route('cities.edit', $city) }}" class="d-flex align-items-center text-primary gap-1"><i class="bx bx-edit-alt label-icon"></i>Edit</a>
+                                            <a href="{{ route('cities.show', $city) }}" class="d-flex align-items-center text-success gap-1"><i class="bx bx-show label-icon"></i>Show</a>
+
+                                            @if(!$city->trashed())
+                                            <form method="POST" action="{{ route('cities.destroy', $city) }}" class="d-flex align-items-center">
+                                                @method('delete')
+                                                @csrf
+                                                
+                                                <button type="submit" class="border-0 bg-transparent text-danger p-0 d-flex align-items-center gap-1 delete_confirm"><i class="bx bx-trash label-icon"></i><span>Delete</span></button>
+                                            </form>
+                                            @else
+                                            <form method="POST" action="{{ route('cities.force-delete', $city) }}">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="border-0 bg-transparent text-danger p-0 d-flex align-items-center gap-1 force_delete_confirm"><i class="bx bx-trash label-icon"></i><span>Force Delete</span></button>
+                                                
+                                            </form>
+
+                                            <form method="POST" action="{{ route('cities.restore', $city) }}" class="d-flex align-items-center">
+                                                @csrf
+                                                <button type="submit" class="border-0 bg-transparent text-warning p-0 d-flex align-items-center gap-1 restore_confirm"><i class="bx bx-undo label-icon"></i><span>Restore</span></button>
+                                            </form>
+                                            @endif
+                                                                                
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div> <!-- end col -->
+        
     </div> <!-- end row -->
 
-
-
-
-
-
-
-
-
-
-
 @endsection
-
-
-
 
 
 @section('script')
@@ -141,12 +114,71 @@
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
-
     <!-- Sweet Alerts js -->
-<script src="{{ URL::asset('/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/sweetalert2/sweetalert2.min.js') }}"></script>
 
-<!-- Sweet alert init js-->
-<script src="{{ URL::asset('/assets/js/pages/sweet-alerts.init.js') }}"></script>
+    <!-- Sweet alert init js-->
+    <script src="{{ URL::asset('/assets/js/pages/sweet-alerts.init.js') }}"></script>
 
+    <script>
+         $('.delete_confirm').click(function (e) {
+            var form =  $(this).closest("form");
+             var name=$(this).closest("tr").find('.get_name').text();
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure you want to delete "+name+" City ?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Delete"
+            }).then(function (result) {
+                if (result.value) {
+                    form.submit();
+                    Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                }
+            });    
+        });
+        
+        $('.restore_confirm').click(function (e) {
+            var form =  $(this).closest("form");
+            var name=$(this).closest("tr").find('.get_name').text();
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure you want to restore "+name+" City ?",
+                text: "the record will be restored!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Restore"
+            }).then(function (result) {
+                if (result.value) {
+                    form.submit();
+                    Swal.fire("Restored!", "Your file has been restored.", "success");
+                }
+            });    
+        });
 
+        $('.force_delete_confirm').click(function (e) {
+            var form =  $(this).closest("form");
+            var name=$(this).closest("tr").find('.get_name').text();
+            event.preventDefault();
+            Swal.fire({
+                title: "Are you sure do you want delete "+name+" city permanently?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#34c38f",
+                cancelButtonColor: "#f46a6a",
+                confirmButtonText: "Delete Permanently"
+            }).then(function (result) {
+                if (result.value) {
+                    form.submit();
+                    Swal.fire("Delete Permanently!", "Your file deleted permanently.", "success");
+                }
+            });    
+        });
+   </script>
 @endsection

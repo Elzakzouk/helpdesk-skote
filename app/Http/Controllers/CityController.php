@@ -25,9 +25,9 @@ class CityController extends Controller
      */
     public function index()
     {
-        $cities = City::all();
+      $cities = City::withTrashed()->get();
         
-        return view('city.index', compact('cities'));
+      return view('city.index', compact('cities'));
     }
 
     /**
@@ -50,7 +50,7 @@ class CityController extends Controller
     {
         $request->validate([
             'name' => 'required|max:191|unique:cities,name',
-            'name_ar' => 'required|max:191|unique:cities,name',
+            'name_ar' => 'required|max:191|unique:cities,name_ar',
             'main' => 'nullable|boolean'
         ]);
 
@@ -84,13 +84,6 @@ class CityController extends Controller
       return view('city.show',compact('city')); 
     }
 
-    public function trashed()
-    {
-  
-      $cities=City::onlyTrashed()->get();
-      return view('City.archive',compact('cities'));
-      
-    }
 
     /**
      * Show the form for editing the specified resource.

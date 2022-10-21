@@ -30,13 +30,15 @@
                     <div class="row mb-4">
                         <label for="horizontal-firstname-input" class="col-sm-9 col-form-label">Name</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="horizontal-firstname-input"  name="name" placeholder="Enter name of City  ">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="horizontal-firstname-input"  name="name" placeholder="Enter name of City  ">
+                            @error('name')<div class="text-danger mt-1" >{{ $message }}</div>@enderror
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label for="horizontal-email-input" class="col-sm-9 col-form-label">Name in Arabic</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="horizontal-email-input" name="name_ar" placeholder="Enter name in arabic">
+                            <input type="text" class="form-control @error('name_ar') is-invalid @enderror" id="horizontal-email-input" name="name_ar" placeholder="Enter name in arabic">
+                            @error('name_ar')<div class="text-danger mt-1" >{{ $message }}</div>@enderror
                         </div>
                     </div>
 

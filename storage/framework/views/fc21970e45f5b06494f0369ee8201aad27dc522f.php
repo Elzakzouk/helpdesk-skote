@@ -28,13 +28,43 @@
                     <div class="row mb-4">
                         <label for="horizontal-firstname-input" class="col-sm-9 col-form-label">Name</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="horizontal-firstname-input"  name="name" value="<?php echo e($city->name); ?>" placeholder="Enter name of City  ">
+                            <input type="text" class="form-control <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="horizontal-firstname-input"  name="name" value="<?php echo e($city->name); ?>" placeholder="Enter name of City  ">
+                            <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><div class="text-danger mt-1" ><?php echo e($message); ?></div><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <label for="horizontal-email-input" class="col-sm-9 col-form-label">Name in Arabic</label>
                         <div class="col-sm-5">
-                            <input type="text" class="form-control" id="horizontal-email-input" name="name_ar" value="<?php echo e($city->name_ar); ?>" placeholder="Enter name in arabic">
+                           <input type="text" class="form-control <?php $__errorArgs = ['name_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" id="horizontal-email-input" name="name_ar" value="<?php echo e($city->name_ar); ?>" placeholder="Enter name in arabic">
+                           <?php $__errorArgs = ['name_ar'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?><div class="text-danger mt-1" ><?php echo e($message); ?></div><?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 

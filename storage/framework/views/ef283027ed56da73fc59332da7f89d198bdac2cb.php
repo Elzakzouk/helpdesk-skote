@@ -14,9 +14,6 @@
     <?php $__env->slot('li_1'); ?> Settings <?php $__env->endSlot(); ?>
     <?php $__env->slot('title'); ?> Cities <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
-
-
-
 <div class="col-xl-15">
         <div class="card" >
             <div class="card-body">

@@ -43,8 +43,6 @@
     <!-- JAVASCRIPT -->
     @include('layouts.vendor-scripts')
 
-
-   
 </body>
 
 
