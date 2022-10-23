@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\LeadController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,11 +46,10 @@ Route::post('/update-password/{id}', [App\Http\Controllers\HomeController::class
 
 
 
+Route::resource('leads',LeadController::class);
+Route::delete('/leads/{id}/force-delete', [LeadController::class,'forceDelete'])->name('leads.force-delete');
+Route::post('/leads/{id}/restore', [LeadController::class,'restore'])->name('leads.restore');
 
-
-
-
-route::get('/archive', [CityController::class,'trashed']);
 
 Route::resource('cities', CityController::class);
 Route::delete('/cities/{city}/force-delete', [CityController::class,'forceDelete'])->name('cities.force-delete');

@@ -1,29 +1,27 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class City extends Model
+class Lead extends Model
 {
     use HasFactory, SoftDeletes;
 
 
     protected $fillable = [
-        'name',
-        'name_ar',
-        'main'
+        "city_id",
+        "name",
+        "code",
+        "address"
+
     ];
 
 
-    public function leads()
+    public function city()
     {
-       return $this->hasMany('App\Models\City','city_id');
+        return $this->belongsTo('App\Models\City','city_id');
     }
-
-
-
-    
-
 }
